@@ -1,12 +1,19 @@
 import { Request, Response, NextFunction } from "express";
-import { supabase } from "../config/supabase";
+import jwt from "jsonwebtoken";
+import { UserModel } from "../user/model/user.model";
+import { config } from "dotenv";
+config();
 
-// Extend Express Request interface to include user property
+const JWT_SECRET = process.env.JWT_SECRET || "";
+
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
-      token?: string;
+      user?: {
+        id: string;
+        email: string;
+        role?: string;
+      };
     }
   }
 }
@@ -15,44 +22,39 @@ export const authenticate = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    // Get token from header
     const authHeader = req.headers.authorization;
-
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
-        message: "Access denied. No token provided.",
+        message: "No token provided, authorization denied",
       });
+      return;
     }
 
-    // Extract token
     const token = authHeader.split(" ")[1];
 
-    // Verify token with Supabase
-    const { data, error } = await supabase.auth.getUser(token);
-
-    if (error || !data.user) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid token.",
-      });
-    }
-
-    // Attach user and token to request object
-    req.user = {
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.user_metadata?.name,
+    // verify token
+    const decoded = jwt.verify(token, JWT_SECRET) as {
+      id: string;
+      email: string;
     };
-    req.token = token;
+
+    const profile = await UserModel.getProfileById(decoded.id);
+
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+      role: profile?.role,
+    };
 
     next();
   } catch (error) {
-    return res.status(401).json({
+    console.error("Authentication error:", error);
+    res.status(401).json({
       success: false,
-      message: "Authentication failed.",
+      message: "Token is not valid",
     });
   }
 };
