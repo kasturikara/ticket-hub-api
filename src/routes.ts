@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 // routes
-import authRouter from "./auth/auth.route";
-import userRoutes from "./user/user.route";
-import eventRoutes from "./event/event.route";
+import authRouter from "./services/auth/auth.route";
+import userRoutes from "./services/user/user.route";
+import eventRoutes from "./services/event/event.route";
 
 const router = Router();
 

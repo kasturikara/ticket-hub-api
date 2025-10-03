@@ -1,5 +1,4 @@
-import { supabase } from "../../config/supabase";
-import { IUser } from "../../user/user.interface";
+import { supabase } from "../../../config/supabase";
 import { IEvent } from "../event.interface";
 
 export class EventModel {

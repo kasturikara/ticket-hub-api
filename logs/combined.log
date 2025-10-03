@@ -1,0 +1,2 @@
+{"level":"info","message":"Server running on port 5000","service":"ticket-hub-api","timestamp":"2025-10-03 20:06:41"}
+{"level":"info","message":"API docs available at http://localhost:5000/api-docs","service":"ticket-hub-api","timestamp":"2025-10-03 20:06:41"}

@@ -141,8 +141,6 @@ components:
           format: password
           example: "password123"
 
-
-
 paths:
   /api/auth/login:
     post:
@@ -623,6 +621,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+                
   /api/events/{id}:
     get:
       tags:
@@ -808,6 +807,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
 security:
   - bearerAuth: []
 tags:

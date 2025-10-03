@@ -1,4 +1,4 @@
-import { supabase } from "../../config/supabase";
+import { supabase } from "../../../config/supabase";
 import { IProfile, IUser } from "../user.interface";
 
 export class UserModel {

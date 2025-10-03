@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { supabase } from "../config/supabase";
+import { supabase } from "../../config/supabase";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 config();
